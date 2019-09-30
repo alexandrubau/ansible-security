@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Create vagrant log directory
+mkdir -p /var/log/vagrant
+
+# Initialize vagrant log file variable
+VLOG=/var/log/vagrant/boot.log
+
+# Disable prompt
+export DEBIAN_FRONTEND=noninteractive
+
+# Add repository in order to install latest version
+apt-add-repository -y -u ppa:ansible/ansible &>> $VLOG
+
+# Install ansible
+apt-get install -y ansible &>> $VLOG
+
+# Install role requirements
+REQ_FILE=/etc/ansible/roles/test/requirements.yml 
+if [ -f $REQ_FILE ]; then
+    ansible-galaxy install -f -p /etc/ansible/roles -r $REQ_FILE &>> $VLOG
+fi
