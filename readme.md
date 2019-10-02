@@ -38,29 +38,22 @@ security_users:
       shell: /usr/sbin/nologin
 ```
 
-**security_chown** (type `array`, default `[]`)
+**security_paths** (type `array`, default `[]`)
 
 Example:
 ```yaml
-security_chown:
+security_paths:
     # Change the owner
     - path: /var/www/website
       user: hello
 
-    # Change the owner and group
+    # Change the owner and group including subdirectories
     - path: /var/www/website
       user: hello
       group: hello
       recurse: yes
-```
 
-**security_chmod** (type `array`, default `[]`)
-
-Example:
-```yaml
-security_chown:
-    # Change the mode
-    - path: /var/www/website/uploads
-      mode: '777'
-      recurse: yes
+    # Create directory
+    - path: /var/www/website
+      create: yes
 ```

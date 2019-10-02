@@ -11,19 +11,14 @@
     system: "{{ item.system | default('no') }}"
     state: "{{ 'absent' if item.remove is defined and item.remove == true else 'present' }}"
     remove: yes # used only if state: 'absend'
-  with_items: "{{ security_users }}"
+  with_items: "{{ security_users | default([]) }}"
 
-- name: Change owner or group for specified paths
+- name: Create directory or change ownership for specified paths
   file:
     path: "{{ item.path }}"
     owner: "{{ item.owner | default(omit) }}"
     group: "{{ item.group | default(omit) }}"
+    mode: "{{ item.mode | default(omit) }}"
+    state: "{{ 'directory' if item.create is defined and item.create == true else 'file' }}"
     recurse: "{{ item.recurse | default('no') }}"
-  with_items: "{{ security_chown }}"
-
-- name: Change mode for specified paths
-  file:
-    path: "{{ item.path }}"
-    mode: "{{ item.mode }}"
-    recurse: "{{ item.recurse | default('no') }}"
-  with_items: "{{ security_chmod }}"
+  with_items: "{{ security_paths | default([]) }}"
