@@ -38,11 +38,11 @@ security_users:
       shell: /usr/sbin/nologin
 ```
 
-**security_paths** (type `array`, default `[]`)
+**security_files** (type `array`, default `[]`)
 
 Example:
 ```yaml
-security_paths:
+security_files:
     # Change the owner
     - path: /var/www/website
       user: hello

@@ -21,4 +21,4 @@
     mode: "{{ item.mode | default(omit) }}"
     state: "{{ 'directory' if item.create is defined and item.create == true else 'file' }}"
     recurse: "{{ item.recurse | default('no') }}"
-  with_items: "{{ security_paths | default([]) }}"
+  with_items: "{{ security_files | default([]) }}"
