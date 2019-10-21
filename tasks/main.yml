@@ -2,23 +2,23 @@
 - name: Create users and groups
   user:
     name: "{{ item.name }}"
-    password: "{{ item.password | password_hash('sha512') if item.password is defined else '!' }}"
-    update_password: "{{ 'always' if item.password_update is defined and item.password_update == true else 'on_create' }}"
-    groups: "{{ item.groups | default([]) }}"
-    append: "{{ item.groups_append | default('yes') }}"
-    shell: "{{ item.shell | default(omit) }}"
-    create_home: "{{ item.home | default('no') }}"
-    system: "{{ item.system | default('no') }}"
-    state: "{{ 'absent' if item.remove is defined and item.remove == true else 'present' }}"
-    remove: yes # used only if state: 'absend'
-  with_items: "{{ security_users | default([]) }}"
+    password: "{{ item.password|password_hash('sha512') if item.password is defined else '!' }}"
+    update_password: "{{ 'always' if item.password_update is defined and item.password_update else 'on_create' }}"
+    groups: "{{ item.groups|default([]) }}"
+    append: "{{ item.groups_append|default('yes') }}"
+    shell: "{{ item.shell|default(omit) }}"
+    create_home: "{{ item.home|default('no') }}"
+    system: "{{ item.system|default('no') }}"
+    state: "{{ 'absent' if item.remove is defined and item.remove else 'present' }}"
+    remove: yes # used only if state: 'absent'
+  with_items: "{{ security_users }}"
 
 - name: Create directory or change ownership for specified paths
   file:
     path: "{{ item.path }}"
-    owner: "{{ item.owner | default(omit) }}"
-    group: "{{ item.group | default(omit) }}"
-    mode: "{{ item.mode | default(omit) }}"
-    state: "{{ 'directory' if item.create is defined and item.create == true else 'file' }}"
-    recurse: "{{ item.recurse | default('no') }}"
-  with_items: "{{ security_files | default([]) }}"
+    owner: "{{ item.owner|default(omit) }}"
+    group: "{{ item.group|default(omit) }}"
+    mode: "{{ item.mode|default(omit) }}"
+    state: "{{ 'directory' if item.create is defined and item.create else 'file' }}"
+    recurse: "{{ item.recurse|default('no') }}"
+  with_items: "{{ security_files }}"
